@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <% if(locals.numLetters){%>
+    <h2>There are <%=locals.numLetters%> digits in your name</h2>
+    <h2></h2>
+    <% } else{ %>
+    <h2>Write your name below 👇</h2>
+
+    <%}%>
+
+    <form action="/submit" method="POST">
+      <input type="text" name="fName" placeholder="FirstName Here" />
+      <input type="text" name="lName" placeholder="LastNAme Here" />
+      <input type="submit" value="OK" />
+    </form>
+  </body>
+</html>

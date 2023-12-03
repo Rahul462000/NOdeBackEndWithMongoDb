@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- this is conditional based rendering  -->
+    <h1>The title is : <%= locals.title%></h1>
+    <h2><b>the time in second is</b> <%=locals.seconds%></h2>
+    <% if(locals.seconds%2===0){ %>
+    <ul>
+      <%  items.forEach((fruits)=>{%>
+        <li><%=fruits %></li>
+     <% })%>
+    <%}else{ %>
+    <p>no items to display</p>
+    <%} %>
+    <p>HTmlContent is : <%= locals.htmlContent%></p>
+
+    <footer>
+      <p>Copyright from</p>
+    </footer>
+  </body>
+</html>

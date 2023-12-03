@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+  </head>
+  <body>
+    <h1>HOME</h1>
+    
+    <!-- 1.accessing the name variable value  -->
+    <!-- locals  is the standard method for writing the data -->
+    <p>Hello <%=locals.name%></p>
+
+    <!-- 2. looping the data -->
+    <ul>
+      <% for(let i =0;i<fruits.length;i++) { %>
+        <li>
+            <%=fruits[i] %>
+        </li>
+      <%}%>
+  </ul>
+
+
+  </body>
+</html>
