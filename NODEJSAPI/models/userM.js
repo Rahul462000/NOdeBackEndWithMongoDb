@@ -12,7 +12,12 @@ const schema = new mongoose.Schema({
   },
   password: {
     type: String,
+    select: false,
     required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 export const User = mongoose.model("User", schema);

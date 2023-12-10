@@ -1,50 +1,61 @@
 import { User } from "../models/userM.js";
+import bcrypt from "bcrypt";
+import sendCookie from "../utils/fewatures.js";
 
-export const getAllUser = async (req, res) => {
-  // this will return all the users
-  const users = await User.find({});
+export const getAllUser = async (req, res) => {};
 
-  //   this is sended by params by postman
-  //   this is how we send data to server and access it
-  console.log(req.query);
-  //   to access it
-  const keyword = req.query.keyword;
-  console.log(keyword);
-  //
-
-  res.json({
-    success: true,
-    users,
-  });
+export const login = async (req, res, next) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email }).select("+password");
+  if (!user) {
+    // this is how we are sending error
+    return res
+      .status(404)
+      .json({ success: false, message: "User doesn't exists" });
+  }
+  // if user is present
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    // this is how we are sending error
+    return res
+      .status(404)
+      .json({ success: false, message: "Invalid email or password" });
+  }
+  // if password matches
+  sendCookie(user, res, `Welcome back,${user.name}`, 200);
 };
 
-export const newUsers = async (req, res) => {
+export const register = async (req, res) => {
   const { name, email, password } = req.body;
-  await User.create({
-    name,
-    email,
-    password,
-  });
-  res.status(201).cookie("tempi", "lol").json({
+  // here we are finding user
+  let user = await User.findOne({ email });
+  if (user) {
+    // this is how we are sending error
+    return res
+      .status(404)
+      .json({ success: false, message: "User already registered" });
+  }
+  // if user is not present we will create a new user
+  const hashPassword = await bcrypt.hash(password, 10);
+  user = await User.create({ name, email, password: hashPassword });
+
+  // generating a token with a fucntion called from utils file
+  sendCookie(user, res, "registered successfully", 201);
+};
+
+export const getMyProfile = (req, res) => {
+  res.status(200).json({
     success: true,
-    message: "User Register",
+    user: req.user,
   });
 };
 
-export const special = (req, res) => {
-  res.json({
-    success: true,
-    message: "just joking",
-  });
-};
-
-export const userDetails = async (req, res) => {
-  const { id } = req.params;
-  const user = await User.findById(id);
-  // when we give dynamic id
-  //   console.log(req.params);
-  res.json({
-    success: true,
-    user,
-  });
+export const logout = (req, res) => {
+  res
+    .status(200)
+    .cookie("token", "", { expires: new Date(Date.now()) })
+    .json({
+      success: true,
+      user: req.user,
+    });
 };
