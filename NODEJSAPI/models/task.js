@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import { Schema } from "mongoose";
 
-const schema = new mongoose.Schema({
+const schema = new Schema({
   title: {
     type: String,
     required: true,
@@ -14,7 +15,7 @@ const schema = new mongoose.Schema({
     default: false,
   },
   user: {
-    type: mongoose.Schema.types.ObjectId,
+    type: Schema.Types.ObjectId,
     // reference value is always be the collection name value
     ref: "User",
     required: true,
