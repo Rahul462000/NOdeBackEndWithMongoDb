@@ -24,16 +24,33 @@ export const getMyTask = async (req, res) => {
 export const updateTask = async (req, res) => {
   // access the id
   const { id } = req.params;
+  // finding the task
+  const task = await Task.findById(id);
+  console.log(task);
+  if (!task)
+    return res.status(404).json({ success: false, message: "Task not found" });
+
+  // the check box
+  task.isCompleted = !task.isCompleted;
+  await task.save();
 
   res.status(201).json({
     success: true,
+    message: "Task updated successfully",
   });
 };
 
 export const deleteTask = async (req, res) => {
-  // this will return id of the match userid
+  const { id } = req.params;
+  // finding the task
+  const task = await Task.findById(id);
+  if (!task)
+    return res.status(404).json({ success: false, message: "Task not found" });
+  // the check box
+  await task.deleteOne();
 
   res.status(201).json({
     success: true,
+    message: "Task deleted successfully",
   });
 };

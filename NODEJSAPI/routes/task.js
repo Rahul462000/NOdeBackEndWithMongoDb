@@ -15,6 +15,9 @@ router.post("/new", isAuthenticated, newTasks);
 // to get all tasks of a particular user
 router.get("/my", isAuthenticated, getMyTask);
 
-router.route("/id:").put(updateTask).delete(deleteTask);
+router
+  .route("/:id")
+  .put(isAuthenticated, updateTask)
+  .delete(isAuthenticated, deleteTask);
 
 export default router;
