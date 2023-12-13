@@ -5,13 +5,13 @@ import ErrorHandler from "../middleware/error.js";
 
 export const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email }).select("+password");
+    const { email, password } = req.body; ////////1.1
+    const user = await User.findOne({ email }).select("+password"); ///////1.2
 
-    if (!user) return next(new ErrorHandler("User not registerd ", 400));
+    if (!user) return next(new ErrorHandler("User not registerd ", 400)); /////1.3
 
     // if user is present
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password); //////1.4
 
     if (!isMatch)
       return next(new ErrorHandler("Invalid email or password ", 400));
@@ -23,18 +23,19 @@ export const login = async (req, res, next) => {
 };
 
 export const register = async (req, res, next) => {
+  /////1.
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password } = req.body; /////1.1
     // here we are finding user
-    let user = await User.findOne({ email });
-    if (user) return next(new ErrorHandler("User already registered", 400));
+    let user = await User.findOne({ email }); //////1.2
+    if (user) return next(new ErrorHandler("User already registered", 400)); ////1.3
 
     // if user is not present we will create a new user
-    const hashPassword = await bcrypt.hash(password, 10);
-    user = await User.create({ name, email, password: hashPassword });
+    const hashPassword = await bcrypt.hash(password, 10); //////1.4
+    user = await User.create({ name, email, password: hashPassword }); //////1.5
 
     // generating a token with a fucntion called from utils file
-    sendCookie(user, res, "registered successfully", 201);
+    sendCookie(user, res, "registered successfully", 201); //////1.6
   } catch (error) {
     next(error);
   }

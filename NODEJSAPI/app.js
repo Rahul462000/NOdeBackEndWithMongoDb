@@ -7,30 +7,32 @@ import cookieParser from "cookie-parser";
 import { errorMiddleware } from "./middleware/error.js";
 import cors from "cors";
 
-export const app = express();
+export const app = express(); //// 1.
 
 config({
   path: "./data/config.env",
-});
+}); /////2.
 
 // to access the body data middleware
-app.use(express.json());
-app.use(cookieParser());
+
+app.use(express.json()); /////3.
+app.use(cookieParser()); /////4.
 // using routes
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/task", taskRouter);
+app.use("/api/v1/users", userRouter); /////5.
+app.use("/api/v1/task", taskRouter); /////6.
+// it is used for hosting purposes
+// here specifying the alowed domain
 app.use(
+  ////8.
   cors({
     origin: [process.env.FRONTEND_URL],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
-
-// 1.
 app.get("/", (req, res) => {
   res.send("<h1>Hello everyone</h1>");
 });
 
 // error handling middleware
-app.use(errorMiddleware);
+app.use(errorMiddleware); /////7.
